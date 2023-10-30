@@ -23,6 +23,7 @@
     ?>
 
     <section class="bg-body-tertiary">
+        <h4 class="p-3 text-center">Мотивационный тест</h4>
         <?php
         require "blocks/config_db.php";
         require "blocks/config_motiv_test.php";
@@ -60,7 +61,7 @@
         $motivationType = getMotivationType($answers);
 
         if ($firstName != null && $lastName != null && $answers != 00000000000000) {
-            // addToDb($firstName, $lastName, $answers, $motivationType);
+            // addToDbMot($firstName, $lastName, $answers, $motivationType);
             require "blocks/res_motiv_test.php";
         }
         ?>

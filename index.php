@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!doctype html>
 <html lang="en">
 
 <head>
@@ -12,8 +11,7 @@
 </head>
 
 <body>
-
-    <?php require "blocks/header.php" ?> 
+    <?php require "blocks/header.php" ?>
 
     <section class="container-fuild overflow-hidden">
         <div class="row align-items-center">
@@ -23,8 +21,8 @@
                     <h1 class="card-title">Discover And<br>Create NFTs</h1>
                     <p class="card-text">Discover, Create and Sell NFTs On Our NFT Marketplace <br>
                         With Over Thousands Of NFTs And Get a $20 bonus.</p>
-                    <a href="#" class="btn btn-dark text-uppercase">Explore More</a>
-                    <a href="#" class="btn btn-outline-secondary text-uppercase">create NFT</a>
+                    <a href="#more" class="btn btn-dark text-uppercase">Explore More</a>
+                    <a href="#create" class="btn btn-outline-secondary text-uppercase">create NFT</a>
                 </div>
                 <div class="d-flex justify-content-center">
                     <div class="col">
@@ -48,6 +46,7 @@
     </section>
 
     <section class="container-fuild overflow-hidden bg-body-tertiary">
+        <a name="more"></a>
         <h3 class="text-center text-gray mt-3 mb-5">Weekly - Top NFT</h3>
         <div id="carouselExample" class="carousel slide mb-5">
             <div class="carousel-inner">
@@ -190,7 +189,52 @@
             </button>
         </div>
     </section>
-    
+
+    <section class="container-fuild p-5">
+        <div class="card bg-dark text-white border rounded-5 p-5">
+            <a name="create"></a>
+            <div class="card-body">
+                <h2 class="card-title">Create and Sell Your NFTs</h2>
+                <p class="card-text text-gray mb-4">World’s Largest NFT Place</p>
+                <form method="post" class="w-50">
+                    <div class="row">
+                        <div class="col">
+                            <?php
+                            if (isset($_POST['NFT’s name'])) $name = $_POST['NFT’s name'];
+                            else echo "Enter NFT’s name <br>"
+                            ?>
+                            <input type="text" class="form-control mb-3" id="exampleFormControlInput1" placeholder="NFT’s name" id="NFT’s name">
+                        </div>
+                        <div class="col">
+                        <?php
+                            if (isset($_POST['NFT’s cost'])) $cost = $_POST['NFT’s cost'];
+                            else echo "Enter NFT’s cost <br>"
+                            ?>
+                            <input type="text" class="form-control mb-3" id="exampleFormControlInput2" placeholder="NFT’s cost" id="NFT’s cost">
+                        </div>
+                    </div>
+                    <?php
+                    if (isset($_POST['link on your NFT'])) $link = $_POST['link on your NFT'];
+                    else echo "Enter link on your NFT <br>"
+                    ?>
+                    <input type="url" class="form-control mb-3" id="exampleFormControlInput3" placeholder="link on your NFT" id="link on your NFT">
+                    <button type="submit" class="btn btn-light btn-connect my-3">Save NFT</button>
+                    <?php
+                    require "blocks/config_db.php";
+                    if ($name != null && $cost != null && $link != null) {
+                        $query = "INSERT INTO `nfts` (nft_name, cost, link) VALUES ('$name', '$cost', '$link')";
+                        $sth = $dbh->prepare($query);
+                        $affectedRowsNumber = $sth->execute();
+
+                        if ($affectedRowsNumber > 0) echo "Данные успешно добавлены <br>";
+                        else echo "error";
+                    }
+                    ?>
+                </form>
+            </div>
+        </div>
+    </section>
+
     <?php require "blocks/footer.php" ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>

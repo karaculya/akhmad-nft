@@ -22,37 +22,37 @@
     ?>
 
     <section class="bg-body-tertiary">
-        <?php
-        require "blocks/config_db.php";
+        <div class="container p-3">
+            <h4 class="p-3 text-center">Тест на знание NFT</h4>
+            <?php
+            require "blocks/config_db.php";
 
-        if (isset($_POST['first_name'])) $firstName = $_POST['first_name'];
+            if (isset($_POST['first_name'])) $firstName = $_POST['first_name'];
 
-        if (isset($_POST['last_name'])) $lastName = $_POST['last_name'];
+            if (isset($_POST['last_name'])) $lastName = $_POST['last_name'];
 
-        $correctAns = ['c', 'b', 'b', 'a', 'c', 'a', 'b', 'b', 'a'];
-        $countRes = 0;
-        for ($i = 0; $i < 9; $i++) {
-            if ($_POST[$i] == $correctAns[$i]) $countRes++;
-        }
+            $correctAns = ['c', 'b', 'b', 'a', 'c', 'a', 'b', 'b', 'a'];
+            $countRes = 0;
+            for ($i = 0; $i < 9; $i++) {
+                if ($_POST[$i] == $correctAns[$i]) $countRes++;
+            }
 
-        $result = "";
-        if ($countRes < 3)
-            $result = "Вы не очень хорошо разбираетесь в NFT, но можете узнать больше о них";
-        else if ($countRes < 6)
-            $result = "Вы имеете базовые знания о NFT, но можете углубить свои знания";
-        else if ($countRes <= 9)
-            $result = "Вы эксперт в области NFT и хорошо разбираетесь в этой теме";
+            $result = "";
+            if ($countRes < 3)
+                $result = "Вы не очень хорошо разбираетесь в NFT, но можете узнать больше о них";
+            else if ($countRes < 6)
+                $result = "Вы имеете базовые знания о NFT, но можете углубить свои знания";
+            else if ($countRes <= 9)
+                $result = "Вы эксперт в области NFT и хорошо разбираетесь в этой теме";
 
 
-        if ($firstName != null && $lastName != null && $result != null) {
-            require "blocks/res_nft_test.php";
-        }
-        ?>
-
-        <div class="container">
+            if ($firstName != null && $lastName != null && $result != null) {
+                require "blocks/res_nft_test.php";
+            }
+            ?>
             <form method="post">
                 <fieldset class="form-group">
-                    <input type="text" class="form-control mt-5 mb-3" placeholder="Введите ваше имя" id="first_name" name="first_name">
+                    <input type="text" class="form-control my-3" placeholder="Введите ваше имя" id="first_name" name="first_name">
                 </fieldset>
                 <fieldset class="form-group">
                     <input type="text" class="form-control" placeholder="Введите вашу фамилию" id="last_name" name="last_name">

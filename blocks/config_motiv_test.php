@@ -1,8 +1,8 @@
 <?php
 require "blocks/config_db.php";
-function addToDb($firstName, $lastName, $answers, $motivationType) {
+function addToDbMot($firstName, $lastName, $answers, $motivationType) {
     global $dbh;
-    $query = "INSERT INTO `people` (first_name, last_name, answers, result) VALUES ('$firstName', '$lastName', '$answers', '$motivationType')";
+    $query = "INSERT INTO `peopleMot` (first_name, last_name, answers, result) VALUES ('$firstName', '$lastName', '$answers', '$motivationType')";
     $sth = $dbh->prepare($query);
     $affectedRowsNumber = $sth->execute();
 
