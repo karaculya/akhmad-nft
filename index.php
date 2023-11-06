@@ -200,33 +200,35 @@
                     <div class="row">
                         <div class="col">
                             <?php
-                            if (isset($_POST['NFT’s name'])) $name = $_POST['NFT’s name'];
+                            if (isset($_POST['name'])) $name = $_POST['name'];
                             else echo "Enter NFT’s name <br>"
                             ?>
-                            <input type="text" class="form-control mb-3" id="exampleFormControlInput1" placeholder="NFT’s name" id="NFT’s name">
+                            <input type="text" class="form-control mb-3" id="exampleFormControlInput1" placeholder="NFT’s name" id="name" name="name">
                         </div>
                         <div class="col">
                         <?php
-                            if (isset($_POST['NFT’s cost'])) $cost = $_POST['NFT’s cost'];
+                            if (isset($_POST['cost'])) $cost = $_POST['cost'];
                             else echo "Enter NFT’s cost <br>"
                             ?>
-                            <input type="text" class="form-control mb-3" id="exampleFormControlInput2" placeholder="NFT’s cost" id="NFT’s cost">
+                            <input type="text" class="form-control mb-3" id="exampleFormControlInput2" placeholder="NFT’s cost" id="cost" name="cost">
                         </div>
                     </div>
                     <?php
-                    if (isset($_POST['link on your NFT'])) $link = $_POST['link on your NFT'];
+                    if (isset($_POST['link'])) $link = $_POST['link'];
                     else echo "Enter link on your NFT <br>"
                     ?>
-                    <input type="url" class="form-control mb-3" id="exampleFormControlInput3" placeholder="link on your NFT" id="link on your NFT">
+                    <input type="url" class="form-control mb-3" id="exampleFormControlInput3" placeholder="link on your NFT" id="link" name="link">
                     <button type="submit" class="btn btn-light btn-connect my-3">Save NFT</button>
                     <?php
                     require "blocks/config_db.php";
+                    if($link.ob_get_length() > 10000) echo "Слишком длинная ссылка";
                     if ($name != null && $cost != null && $link != null) {
-                        $query = "INSERT INTO `nfts` (nft_name, cost, link) VALUES ('$name', '$cost', '$link')";
+                        $dbh = new PDO('mysql:dbname=coursework;host=localhost', 'root', '');
+                        $query = "INSERT INTO `nfts` (name, cost, link) VALUES ('$name', '$cost', '$link')";
                         $sth = $dbh->prepare($query);
                         $affectedRowsNumber = $sth->execute();
 
-                        if ($affectedRowsNumber > 0) echo "Данные успешно добавлены <br>";
+                        if ($affectedRowsNumber > 0) echo "<br> Данные успешно добавлены <br>";
                         else echo "error";
                     }
                     ?>

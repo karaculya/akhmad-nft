@@ -26,6 +26,7 @@
             <h4 class="p-3 text-center">Тест на знание NFT</h4>
             <?php
             require "blocks/config_db.php";
+            require "blocks/funs_test.php";
 
             if (isset($_POST['first_name'])) $firstName = $_POST['first_name'];
 
@@ -37,17 +38,17 @@
                 if ($_POST[$i] == $correctAns[$i]) $countRes++;
             }
 
-            $result = "";
+            $result = 0;
             if ($countRes < 3)
-                $result = "Вы не очень хорошо разбираетесь в NFT, но можете узнать больше о них";
+                $result = 1;
             else if ($countRes < 6)
-                $result = "Вы имеете базовые знания о NFT, но можете углубить свои знания";
+                $result = 2;
             else if ($countRes <= 9)
-                $result = "Вы эксперт в области NFT и хорошо разбираетесь в этой теме";
-
-
+                $result = 3;  
+            
             if ($firstName != null && $lastName != null && $result != null) {
-                require "blocks/res_nft_test.php";
+                $resNFT = addToDbNFT($firstName, $lastName, $result);
+                require "blocks/result_test.php";
             }
             ?>
             <form method="post">

@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!doctype html>
 <html lang="en">
 
 <head>
@@ -15,7 +14,7 @@
     <?php
     require 'blocks/config_db.php';
 
-    $sth = $dbh->prepare("SELECT * FROM `questions`");
+    $sth = $dbh->prepare("SELECT * FROM `mt-questions`");
     $sth->execute();
     $dt = $sth->fetchAll(PDO::FETCH_ASSOC);
 
@@ -26,43 +25,23 @@
         <h4 class="p-3 text-center">Мотивационный тест</h4>
         <?php
         require "blocks/config_db.php";
-        require "blocks/config_motiv_test.php";
+        require "blocks/funs_test.php";
 
         if (isset($_POST['first_name'])) $firstName = $_POST['first_name'];
 
         if (isset($_POST['last_name'])) $lastName = $_POST['last_name'];
 
         $answers  = "";
-        $s = "";
         for ($i = 0; $i < 14; $i++) {
-            switch ($_POST[$i]) {
-                case "aa":
-                    $s = "1";
-                    break;
-                case "bb":
-                    $s = "2";
-                    break;
-                case "cc":
-                    $s = "3";
-                    break;
-                case "dd":
-                    $s = "4";
-                    break;
-                case "ee":
-                    $s = "5";
-                    break;
-                default:
-                    $s = "0";
-                    break;
-            }
-            $answers = $answers . $s;
+            $answers = $answers . $_POST[$i];
         }
 
         $motivationType = getMotivationType($answers);
 
+        $isMotivationTest = true;
         if ($firstName != null && $lastName != null && $answers != 00000000000000) {
-            // addToDbMot($firstName, $lastName, $answers, $motivationType);
-            require "blocks/res_motiv_test.php";
+            $resMt = addToDbMT($firstName, $lastName, $answers, $motivationType);
+            require "blocks/result_test.php";
         }
         ?>
 
@@ -80,31 +59,31 @@
                 ?>
                     <div class="form-check mt-5" style="font-weight: bold;"><?= $dt[$i]['question'] ?></div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name=<?= $i ?> value="aa" id="flexRadioDefault1">
+                        <input class="form-check-input" type="radio" name=<?= $i ?> value="1" id="flexRadioDefault1">
                         <label class="form-check-label" for="flexRadioDefault1">
                             <?= $dt[$i]['answer1'] ?>
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name=<?= $i ?> value="bb" id="flexRadioDefault2">
+                        <input class="form-check-input" type="radio" name=<?= $i ?> value="2" id="flexRadioDefault2">
                         <label class="form-check-label" for="flexRadioDefault2">
                             <?= $dt[$i]['answer2'] ?>
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name=<?= $i ?> value="cc" id="flexRadioDefault3">
+                        <input class="form-check-input" type="radio" name=<?= $i ?> value="3" id="flexRadioDefault3">
                         <label class="form-check-label" for="flexRadioDefault3">
                             <?= $dt[$i]['answer3'] ?>
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name=<?= $i ?> value="dd" id="flexRadioDefault4">
+                        <input class="form-check-input" type="radio" name=<?= $i ?> value="4" id="flexRadioDefault4">
                         <label class="form-check-label" for="flexRadioDefault4">
                             <?= $dt[$i]['answer4'] ?>
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name=<?= $i ?> value="ee" id="flexRadioDefault5">
+                        <input class="form-check-input" type="radio" name=<?= $i ?> value="5" id="flexRadioDefault5">
                         <label class="form-check-label" for="flexRadioDefault5">
                             <?= $dt[$i]['answer5'] ?>
                         </label>
