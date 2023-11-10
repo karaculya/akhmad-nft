@@ -1,33 +1,40 @@
 <?php
 require "blocks/config_db.php";
-function addToDbMT($firstName, $lastName, $answers, $motivationType)
+
+function getDataByQuery($query)
 {
     global $dbh;
-    $query = "INSERT INTO `mt-people` (first_name, last_name, answers, result) VALUES ('$firstName', '$lastName', '$answers', '$motivationType')";
-    $sth = $dbh->prepare($query);
-    $sth->execute();
 
-    $sth = $dbh->prepare("SELECT `mt-people`.first_name, `mt-people`.last_name, `mt-people`.result, `mt-types`.type
-    FROM `mt-people` INNER JOIN `mt-types` ON `mt-people`.result = `mt-types`.id 
-    WHERE `mt-people`.first_name = '$firstName'");
+    $s = (string)$query;
+    $sth = $dbh->prepare($s);
     $sth->execute();
     $dt = $sth->fetchAll(PDO::FETCH_ASSOC);
+
+    return $dt;
+}
+
+function addToDbMT($firstName, $lastName, $answers, $motivationType)
+{
+    $queryAdd = "INSERT INTO `mt-people` (first_name, last_name, answers, result) VALUES ('$firstName', '$lastName', '$answers', '$motivationType')";
+    getDataByQuery($queryAdd);
+
+    $queryGet = "SELECT `mt-people`.first_name, `mt-people`.last_name, `mt-people`.result, `mt-types`.type
+    FROM `mt-people` INNER JOIN `mt-types` ON `mt-people`.result = `mt-types`.id 
+    WHERE `mt-people`.first_name = '$firstName'";
+    $dt = getDataByQuery($queryGet);
 
     return $dt[0];
 }
 
 function addToDbNFT($firstName, $lastName, $result)
 {
-    global $dbh;
-    $query = "INSERT INTO `nft-people` (first_name, last_name, res) VALUES ('$firstName', '$lastName', '$result')";
-    $sth = $dbh->prepare($query);
-    $sth->execute();
+    $queryAdd = "INSERT INTO `nft-people` (first_name, last_name, res) VALUES ('$firstName', '$lastName', '$result')";
+    getDataByQuery($queryAdd);
 
-    $sth = $dbh->prepare("SELECT `nft-people`.first_name, `nft-people`.last_name, `nft-people`.res, `nft-types`.type
+    $queryGet = "SELECT `nft-people`.first_name, `nft-people`.last_name, `nft-people`.res, `nft-types`.type
     FROM `nft-people` INNER JOIN `nft-types` ON `nft-people`.res = `nft-types`.id 
-    WHERE `nft-people`.first_name = '$firstName'");
-    $sth->execute();
-    $dt = $sth->fetchAll(PDO::FETCH_ASSOC);
+    WHERE `nft-people`.first_name = '$firstName'";
+    $dt = getDataByQuery($queryGet);
 
     return $dt[0];
 }
@@ -72,3 +79,18 @@ function getMotivationType($buf)
     }
     return $indexMax + 1;
 }
+
+function getNftRes($buf)
+{
+    $correctAns = ['c', 'b', 'b', 'a', 'c', 'a', 'b', 'b', 'a'];
+ 
+    $countRes = 0;
+    for ($i = 0; $i < 9; $i++) {
+        if (strcmp($buf[$i], $correctAns[$i]) == 0) $countRes++;
+    }
+
+    if ($countRes < 3) return 1;
+    else if ($countRes < 6) return 2;
+    else if ($countRes <= 9) return 3;
+}
+?>

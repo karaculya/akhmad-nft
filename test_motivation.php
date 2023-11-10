@@ -11,44 +11,38 @@
 </head>
 
 <body>
-    <?php
-    require 'blocks/config_db.php';
-
-    $sth = $dbh->prepare("SELECT * FROM `mt-questions`");
-    $sth->execute();
-    $dt = $sth->fetchAll(PDO::FETCH_ASSOC);
-
-    require "blocks/header.php"
-    ?>
+    <?php require "blocks/header.php"?>
 
     <section class="bg-body-tertiary">
-        <h4 class="p-3 text-center">Мотивационный тест</h4>
-        <?php
-        require "blocks/config_db.php";
-        require "blocks/funs_test.php";
+        <div class="container p-3">
+            <h4 class="p-3 text-center">Мотивационный тест</h4>
+            <?php
+            require "blocks/config_db.php";
+            require "blocks/funs_test.php";
 
-        if (isset($_POST['first_name'])) $firstName = $_POST['first_name'];
+            $query = "SELECT * FROM `mt-questions`";
+            $dt = getDataByQuery($query);
 
-        if (isset($_POST['last_name'])) $lastName = $_POST['last_name'];
+            if (isset($_POST['first_name'])) $firstName = $_POST['first_name'];
 
-        $answers  = "";
-        for ($i = 0; $i < 14; $i++) {
-            $answers = $answers . $_POST[$i];
-        }
+            if (isset($_POST['last_name'])) $lastName = $_POST['last_name'];
 
-        $motivationType = getMotivationType($answers);
+            $answers  = "";
+            for ($i = 0; $i < 14; $i++) {
+                $answers = $answers . $_POST[$i];
+            }
 
-        $isMotivationTest = true;
-        if ($firstName != null && $lastName != null && $answers != 00000000000000) {
-            $resMt = addToDbMT($firstName, $lastName, $answers, $motivationType);
-            require "blocks/result_test.php";
-        }
-        ?>
+            $motivationType = getMotivationType($answers);
 
-        <div class="container">
+            $isMotivationTest = true;
+            if ($firstName != null && $lastName != null && $answers != 00000000000000) {
+                $resMt = addToDbMT($firstName, $lastName, $answers, $motivationType);
+                require "blocks/result_test.php";
+            }
+            ?>
             <form method="post">
                 <fieldset class="form-group">
-                    <input type="text" class="form-control mt-5 mb-3" placeholder="Введите ваше имя" id="first_name" name="first_name">
+                    <input type="text" class="form-control my-3" placeholder="Введите ваше имя" id="first_name" name="first_name">
                 </fieldset>
                 <fieldset class="form-group">
                     <input type="text" class="form-control" placeholder="Введите вашу фамилию" id="last_name" name="last_name">
@@ -89,7 +83,6 @@
                         </label>
                     </div>
                 <?php endfor; ?>
-
                 <button type="submit" class="btn btn-dark my-4">Отправить</button>
             </form>
         </div>

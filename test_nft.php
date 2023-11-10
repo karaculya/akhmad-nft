@@ -11,15 +11,7 @@
 </head>
 
 <body>
-    <?php
-    require 'blocks/config_db.php';
-
-    $sth = $dbh->prepare("SELECT * FROM `nft-questions`");
-    $sth->execute();
-    $dt = $sth->fetchAll(PDO::FETCH_ASSOC);
-
-    require "blocks/header.php"
-    ?>
+    <?php require "blocks/header.php"?>
 
     <section class="bg-body-tertiary">
         <div class="container p-3">
@@ -28,23 +20,19 @@
             require "blocks/config_db.php";
             require "blocks/funs_test.php";
 
+            $query = "SELECT * FROM `nft-questions`";
+            $dt = getDataByQuery($query);
+
             if (isset($_POST['first_name'])) $firstName = $_POST['first_name'];
 
             if (isset($_POST['last_name'])) $lastName = $_POST['last_name'];
 
-            $correctAns = ['c', 'b', 'b', 'a', 'c', 'a', 'b', 'b', 'a'];
-            $countRes = 0;
+            $answers  = "";
             for ($i = 0; $i < 9; $i++) {
-                if ($_POST[$i] == $correctAns[$i]) $countRes++;
+                $answers = $answers . $_POST[$i];
             }
 
-            $result = 0;
-            if ($countRes < 3)
-                $result = 1;
-            else if ($countRes < 6)
-                $result = 2;
-            else if ($countRes <= 9)
-                $result = 3;  
+            $result = getNftRes($answers);
             
             if ($firstName != null && $lastName != null && $result != null) {
                 $resNFT = addToDbNFT($firstName, $lastName, $result);

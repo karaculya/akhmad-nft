@@ -4,11 +4,9 @@
         <?= $firstName . ' ' . $lastName ?> <br>
         <?php
         if ($isMotivationTest === true) {
-            echo "Ваш тип мотивации : " . $motivationType;
-            echo "<br>" . $resMt['type'];
+            echo $resMt['type'];
         } else {
-            echo "Количество правильных ответов : " . $countRes;
-            echo "<br>" . $resNFT['type'];
+            echo $resNFT['type'];
         }
         ?>
     </p>
