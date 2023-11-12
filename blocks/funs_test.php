@@ -13,13 +13,13 @@ function getDataByQuery($query)
     return $dt;
 }
 
-function addToDbMT($firstName, $lastName, $answers, $motivationType)
+function addToDbMT($firstName, $lastName, $motivationType)
 {
-    $queryAdd = "INSERT INTO `mt-people` (first_name, last_name, answers, result) VALUES ('$firstName', '$lastName', '$answers', '$motivationType')";
+    $queryAdd = "INSERT INTO `mt-people` (first_name, last_name, res) VALUES ('$firstName', '$lastName', '$motivationType')";
     getDataByQuery($queryAdd);
 
-    $queryGet = "SELECT `mt-people`.first_name, `mt-people`.last_name, `mt-people`.result, `mt-types`.type
-    FROM `mt-people` INNER JOIN `mt-types` ON `mt-people`.result = `mt-types`.id 
+    $queryGet = "SELECT `mt-people`.first_name, `mt-people`.last_name, `mt-people`.res, `mt-types`.type
+    FROM `mt-people` INNER JOIN `mt-types` ON `mt-people`.res = `mt-types`.id 
     WHERE `mt-people`.first_name = '$firstName'";
     $dt = getDataByQuery($queryGet);
 

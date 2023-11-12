@@ -195,86 +195,81 @@
         <div class="card bg-dark text-white border rounded-5 p-5 my-5">
             <div class="card-body">
                 <h2 class="card-title">TodoList</h2>
-                <div class="d-flex flex-row justify-content-between gap-5">
+                <div class="d-flex flex-row justify-content-between flex-lg-nowrap flex-wrap gap-5">
+                    <?php
+                    require "blocks/config_db.php";
+                    require "blocks/funs_test.php";
+
+                    $task = $_POST['task'];
+                    $deadline = $_POST['deadline'];
+                    if ($task != null || $deadline != null) {
+                        $query = "INSERT INTO `tasks` (task, deadline, isComp) VALUES ('$task', '$deadline', false)";
+                        getDataByQuery($query);
+                    }
+
+                    $query = "SELECT * FROM `tasks` ORDER BY `id` DESC";
+                    $array = getDataByQuery($query);
+                    ?>
+
                     <form method="post" class="w-50">
                         <input type="text" name="task" id="task" placeholder="Your task" class="form-control my-3">
                         <input type="datetime-local" name="deadline" id="deadline" placeholder="Your deadline" class="form-control mb-2">
                         <button type="submit" class="btn btn-light btn-connect my-3">Save task</button>
                     </form>
+                    
                     <div class="w-50">
-                        <?php
-                        require "blocks/config_db.php";
-                        require "blocks/funs_test.php";
-
-                        $task = $_POST['task'];
-                        $deadline = $_POST['deadline'];
-                        if ($task != null || $deadline != null) {
-                            $query = "INSERT INTO `tasks` (task, deadline, isComp) VALUES ('$task', '$deadline', false)";
-                            getDataByQuery($query);
-                        }
-
-                        $query = "SELECT * FROM `tasks` ORDER BY `id` DESC";
-                        $array = getDataByQuery($query);
-                        ?>
-
-                        <p>
-                            <a class="btn btn-light" data-bs-toggle="collapse" href="#all" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                All tasks
-                            </a>
-                            <a class="btn btn-light" data-bs-toggle="collapse" href="#notCompleted" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                Not completed
-                            </a>
-                            <a class="btn btn-light" data-bs-toggle="collapse" href="#completed" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                Completed
-                            </a>
-                        </p>
-                        <div class="collapse" id="all">
+                        <div class="btn-group" role="group" aria-label="Basic outlined example">
+                            <button type="button" class="btn btn-outline-light" data-bs-toggle="collapse" data-bs-target="#all" aria-expanded="false" aria-controls="all">All tasks</button>
+                            <button type="button" class="btn btn-outline-light" data-bs-toggle="collapse" data-bs-target="#notCompleted" aria-expanded="false" aria-controls="notCompleted">Not completed</button>
+                            <button type="button" class="btn btn-outline-light" data-bs-toggle="collapse" data-bs-target="#completed" aria-expanded="false" aria-controls="completed">Completed</button>
+                        </div>
+                        <div class="collapse mt-2" id="all">
                             <ul class="list-group overflow-auto text-dark" style="height: 150px;">
                                 <?php foreach ($array as $key => $val) : ?>
                                     <li class="list-group-item d-flex flex-row justify-content-between align-items-center">
                                         <b><?= $val['task'] . ' ' . $val['deadline'] ?></b>
                                         <div>
-                                            <a href='/update.php?id=<?= $val['id'] ?>'>
+                                            <a href='/сomplete.php?id=<?= $val['id'] ?>'>
                                                 <button type="button" class="btn btn-info">Complete</button>
                                             </a>
                                             <a href='/delete.php?id=<?= $val['id'] ?>'>
-                                                <button type="button" class="btn btn-info">Delete</button>
+                                                <button type="button" class="btn btn-secondary">Delete</button>
                                             </a>
                                         </div>
                                     </li>
                                 <?php endforeach; ?>
                             </ul>
                         </div>
-                        <div class="collapse" id="notCompleted">
+                        <div class="collapse mt-2" id="notCompleted">
                             <ul class="list-group overflow-auto text-dark" style="height: 150px;">
                                 <?php foreach ($array as $key => $val) : ?>
                                     <?php if ($val['isComp'] == 1) continue; ?>
                                     <li class="list-group-item d-flex flex-row justify-content-between align-items-center">
                                         <b><?= $val['task'] . ' ' . $val['deadline'] ?></b>
                                         <div>
-                                            <a href='/update.php?id=<?= $val['id'] ?>'>
+                                            <a href='/сomplete.php?id=<?= $val['id'] ?>'>
                                                 <button type="button" class="btn btn-info">Complete</button>
                                             </a>
                                             <a href='/delete.php?id=<?= $val['id'] ?>'>
-                                                <button type="button" class="btn btn-info">Delete</button>
+                                                <button type="button" class="btn btn-secondary">Delete</button>
                                             </a>
                                         </div>
                                     </li>
                                 <?php endforeach; ?>
                             </ul>
                         </div>
-                        <div class="collapse" id="completed">
+                        <div class="collapse mt-2" id="completed">
                             <ul class="list-group overflow-auto text-dark" style="height: 150px;">
                                 <?php foreach ($array as $key => $val) : ?>
                                     <?php if ($val['isComp'] == 0) continue; ?>
                                     <li class="list-group-item d-flex flex-row justify-content-between align-items-center">
                                         <b><?= $val['task'] . ' ' . $val['deadline'] ?></b>
                                         <div>
-                                            <a href='/update.php?id=<?= $val['id'] ?>'>
+                                            <a href='/сomplete.php?id=<?= $val['id'] ?>'>
                                                 <button type="button" class="btn btn-info">Complete</button>
                                             </a>
                                             <a href='/delete.php?id=<?= $val['id'] ?>'>
-                                                <button type="button" class="btn btn-info">Delete</button>
+                                                <button type="button" class="btn btn-secondary">Delete</button>
                                             </a>
                                         </div>
                                     </li>

@@ -1,10 +1,10 @@
 <?php
-if(isset($_GET["id"])) {
+if (isset($_GET["id"])) {
     $id = $_GET['id'];
 
     require "blocks/config_db.php";
 
-    $sth = $dbh->prepare("DELETE FROM `tasks` WHERE `id`=?");
+    $sth = $dbh->prepare("UPDATE `tasks` SET `isComp` = true WHERE `id`=?");
     $sth->execute([$id]);
 }
 

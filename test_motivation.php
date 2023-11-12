@@ -32,11 +32,11 @@
                 $answers = $answers . $_POST[$i];
             }
 
-            $motivationType = getMotivationType($answers);
+            $result = getMotivationType($answers);
 
             $isMotivationTest = true;
             if ($firstName != null && $lastName != null && $answers != 00000000000000) {
-                $resMt = addToDbMT($firstName, $lastName, $answers, $motivationType);
+                $resMt = addToDbMT($firstName, $lastName, $result);
                 require "blocks/result_test.php";
             }
             ?>
