@@ -22,7 +22,7 @@
                     <p class="card-text">Discover, Create and Sell NFTs On Our NFT Marketplace <br>
                         With Over Thousands Of NFTs And Get a $20 bonus.</p>
                     <a href="#more" class="btn btn-dark text-uppercase">Explore More</a>
-                    <a href="#create" class="btn btn-outline-secondary text-uppercase">create NFT</a>
+                    <a href="#todolist" class="btn btn-outline-secondary text-uppercase">create task</a>
                 </div>
                 <div class="d-flex justify-content-center">
                     <div class="col">
@@ -190,49 +190,99 @@
         </div>
     </section>
 
-    <section class="container-fuild p-5">
-        <div class="card bg-dark text-white border rounded-5 p-5">
-            <a name="create"></a>
+    <section class="container">
+        <a name="todolist"></a>
+        <div class="card bg-dark text-white border rounded-5 p-5 my-5">
             <div class="card-body">
-                <h2 class="card-title">Create and Sell Your NFTs</h2>
-                <p class="card-text text-gray mb-4">World’s Largest NFT Place</p>
-                <form method="post" class="w-50">
-                    <div class="row">
-                        <div class="col">
-                            <?php
-                            if (isset($_POST['name'])) $name = $_POST['name'];
-                            else echo "Enter NFT’s name <br>"
-                            ?>
-                            <input type="text" class="form-control mb-3" id="exampleFormControlInput1" placeholder="NFT’s name" id="name" name="name">
-                        </div>
-                        <div class="col">
+                <h2 class="card-title">TodoList</h2>
+                <div class="d-flex flex-row justify-content-between gap-5">
+                    <form method="post" class="w-50">
+                        <input type="text" name="task" id="task" placeholder="Your task" class="form-control my-3">
+                        <input type="datetime-local" name="deadline" id="deadline" placeholder="Your deadline" class="form-control mb-2">
+                        <button type="submit" class="btn btn-light btn-connect my-3">Save task</button>
+                    </form>
+                    <div class="w-50">
                         <?php
-                            if (isset($_POST['cost'])) $cost = $_POST['cost'];
-                            else echo "Enter NFT’s cost <br>"
-                            ?>
-                            <input type="text" class="form-control mb-3" id="exampleFormControlInput2" placeholder="NFT’s cost" id="cost" name="cost">
+                        require "blocks/config_db.php";
+                        require "blocks/funs_test.php";
+
+                        $task = $_POST['task'];
+                        $deadline = $_POST['deadline'];
+                        if ($task != null || $deadline != null) {
+                            $query = "INSERT INTO `tasks` (task, deadline, isComp) VALUES ('$task', '$deadline', false)";
+                            getDataByQuery($query);
+                        }
+
+                        $query = "SELECT * FROM `tasks` ORDER BY `id` DESC";
+                        $array = getDataByQuery($query);
+                        ?>
+
+                        <p>
+                            <a class="btn btn-light" data-bs-toggle="collapse" href="#all" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                All tasks
+                            </a>
+                            <a class="btn btn-light" data-bs-toggle="collapse" href="#notCompleted" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                Not completed
+                            </a>
+                            <a class="btn btn-light" data-bs-toggle="collapse" href="#completed" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                Completed
+                            </a>
+                        </p>
+                        <div class="collapse" id="all">
+                            <ul class="list-group overflow-auto text-dark" style="height: 150px;">
+                                <?php foreach ($array as $key => $val) : ?>
+                                    <li class="list-group-item d-flex flex-row justify-content-between align-items-center">
+                                        <b><?= $val['task'] . ' ' . $val['deadline'] ?></b>
+                                        <div>
+                                            <a href='/update.php?id=<?= $val['id'] ?>'>
+                                                <button type="button" class="btn btn-info">Complete</button>
+                                            </a>
+                                            <a href='/delete.php?id=<?= $val['id'] ?>'>
+                                                <button type="button" class="btn btn-info">Delete</button>
+                                            </a>
+                                        </div>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                        <div class="collapse" id="notCompleted">
+                            <ul class="list-group overflow-auto text-dark" style="height: 150px;">
+                                <?php foreach ($array as $key => $val) : ?>
+                                    <?php if ($val['isComp'] == 1) continue; ?>
+                                    <li class="list-group-item d-flex flex-row justify-content-between align-items-center">
+                                        <b><?= $val['task'] . ' ' . $val['deadline'] ?></b>
+                                        <div>
+                                            <a href='/update.php?id=<?= $val['id'] ?>'>
+                                                <button type="button" class="btn btn-info">Complete</button>
+                                            </a>
+                                            <a href='/delete.php?id=<?= $val['id'] ?>'>
+                                                <button type="button" class="btn btn-info">Delete</button>
+                                            </a>
+                                        </div>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                        <div class="collapse" id="completed">
+                            <ul class="list-group overflow-auto text-dark" style="height: 150px;">
+                                <?php foreach ($array as $key => $val) : ?>
+                                    <?php if ($val['isComp'] == 0) continue; ?>
+                                    <li class="list-group-item d-flex flex-row justify-content-between align-items-center">
+                                        <b><?= $val['task'] . ' ' . $val['deadline'] ?></b>
+                                        <div>
+                                            <a href='/update.php?id=<?= $val['id'] ?>'>
+                                                <button type="button" class="btn btn-info">Complete</button>
+                                            </a>
+                                            <a href='/delete.php?id=<?= $val['id'] ?>'>
+                                                <button type="button" class="btn btn-info">Delete</button>
+                                            </a>
+                                        </div>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
                         </div>
                     </div>
-                    <?php
-                    if (isset($_POST['link'])) $link = $_POST['link'];
-                    else echo "Enter link on your NFT <br>"
-                    ?>
-                    <input type="url" class="form-control mb-3" id="exampleFormControlInput3" placeholder="link on your NFT" id="link" name="link">
-                    <button type="submit" class="btn btn-light btn-connect my-3">Save NFT</button>
-                    <?php
-                    require "blocks/config_db.php";
-                    if($link.ob_get_length() > 10000) echo "Слишком длинная ссылка";
-                    if ($name != null && $cost != null && $link != null) {
-                        $dbh = new PDO('mysql:dbname=coursework;host=localhost', 'root', '');
-                        $query = "INSERT INTO `nfts` (name, cost, link) VALUES ('$name', '$cost', '$link')";
-                        $sth = $dbh->prepare($query);
-                        $affectedRowsNumber = $sth->execute();
-
-                        if ($affectedRowsNumber > 0) echo "<br> Данные успешно добавлены <br>";
-                        else echo "error";
-                    }
-                    ?>
-                </form>
+                </div>
             </div>
         </div>
     </section>
