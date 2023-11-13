@@ -4,8 +4,8 @@
     <div class="container p-3">
         <h4 class="p-3 text-center">Тест на знание NFT</h4>
         <?php
-        require "blocks/config_db.php";
-        require "blocks/funs_test.php";
+        require "serv/config_db.php";
+        require "serv/funs_test.php";
 
         $query = "SELECT * FROM `nft-questions`";
         $dt = getDataByQuery($query);
@@ -34,9 +34,7 @@
                 <input type="text" class="form-control" placeholder="Введите вашу фамилию" id="last_name" name="last_name">
             </fieldset>
 
-            <?php
-            for ($i = 0; $i < 9; $i++) :
-            ?>
+            <?php for ($i = 0; $i < 9; $i++) : ?>
                 <div class="form-check mt-5" style="font-weight: bold;"><?= $dt[$i]['question'] ?></div>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name=<?= $i ?> value="a" id="flexRadioDefault1">

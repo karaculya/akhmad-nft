@@ -2,7 +2,7 @@
 if (isset($_GET["id"])) {
     $id = $_GET['id'];
 
-    require "blocks/config_db.php";
+    require "serv/config_db.php";
 
     $sth = $dbh->prepare("UPDATE `tasks` SET `isComp` = true WHERE `id`=?");
     $sth->execute([$id]);

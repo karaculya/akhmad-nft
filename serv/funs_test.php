@@ -1,5 +1,5 @@
 <?php
-require "blocks/config_db.php";
+require "serv/config_db.php";
 
 function getDataByQuery($query)
 {
